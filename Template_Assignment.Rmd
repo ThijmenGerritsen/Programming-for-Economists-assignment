@@ -51,7 +51,10 @@ Include the following:
 Preferably from a URL, but if not, make sure to download the data and store it in a shared location that you can load the data in from. Do not store the data in a folder you include in the Github repository!
 
 ```{r loading_data}
-dataset <- midwest
+#dataset <- midwest
+
+concentratie_2024_PFS10_Haarlemmermeer <- read_delim("data/concentratie_2024_PFS10_Haarlemmermeer.csv", 
+delim = ";", escape_double = FALSE, trim_ws = TRUE)
 ```
 
 midwest is an example dataset included in the tidyverse package
