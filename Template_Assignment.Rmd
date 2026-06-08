@@ -105,6 +105,15 @@ mean(dataset$percollege)
 
 Please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
 
+```{r}
+library(readr)
+DataExtract <- read_csv("data/DataExtract.csv")
+
+summary(as.factor(DataExtract$Sex))
+
+```
+
+
 ## 3.2 Generate necessary variables
 
 Variable 1
