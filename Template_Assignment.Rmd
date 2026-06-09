@@ -53,7 +53,7 @@ Preferably from a URL, but if not, make sure to download the data and store it i
 ```{r loading_data}
 #dataset <- midwest
 library(readr)
-concentratie_2024_PFS10_Haarlemmermeer <- read_delim("data/concentratie_2024_PFS10_Haarlemmermeer.csv", 
+DataExtract2 <- read_delim("data/DataExtract2.csv", 
 delim = ";", escape_double = FALSE, trim_ws = TRUE)
 Part1 <- read_csv("data/DataExtract.csv")
 Part2 <- read_csv("data/DataExtract2.csv")
@@ -113,8 +113,15 @@ Please use a separate 'R block' of code for each type of cleaning. So, e.g. one 
 ## 3.2 Generate necessary variables
 
 Variable 1
+<<<<<<< Updated upstream
 ```{r}
 names(combined_data)[names(combined_data) == "Affected Population"] <- "affected_population"
+=======
+
+```{r gen_var1}
+DataExtract2
+Variable 2
+>>>>>>> Stashed changes
 ```
 
 
