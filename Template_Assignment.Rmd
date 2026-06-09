@@ -91,8 +91,10 @@ These are things that are usually included in the metadata of the dataset. For y
 Think of things like:
 
 -   Do the variables contain health information or SES information?
+The variables we used do contain both health information and SES information, 
 
 -   Have they been measured by interviewing individuals or is the data coming from administrative sources?
+
 
 *For the sake of this example, I will continue with the assignment...*
 
