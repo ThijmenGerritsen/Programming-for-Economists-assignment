@@ -38,12 +38,11 @@ Use APA referencing throughout your document. [Here's a link to some explanation
 
 ## 1.1 Describe the Social Problem
 
-- The problem that we will assess is particulate matter distribution across different regions in the Netherlands, and its correlation with health effects, more specifically, mortality rates. The datasets that we use measure PM2.5, this is particulate matter that is less than 2.5μm in size. Another frequently used measurement of particulate matter is PM10, which is particulate matter that is less than 10μm in size. We have chosen to use PM2.5 because its small size allows it to penetrate deeper into the lungs than larger particles (WHO, 2006). 
-A potential pitfall in our research is that Janssen et al. (2013) argues that both PM2.5 and PM10 have a very similar association with mortality. So when we focus on PM2.5, we should not discount the fact that PM10 is also heavily correlated with public health issues. However, Janssen et al. (2013) draws on data from 2008/2009, being aware of outdated measurements is of importance in our research.
-Another gap in the research is the lack of structural measurement of ultrafine particles (UFP) in the Netherlands. These particles are smaller than PM2.5 and are also commonly associated with health risks. Some of the health risks that are commonly attributable to PM2.5 may partially have a causal relationship with UFP concentration, which is much more difficult to find consistent data for (CLO, 2024).
-This is a relevant issue in Dutch society for a variety of reasons. For example, the debate around the role that TATA Steel plays when it comes to contributing to health risks for local citizens. For example, residents in Wijk aan Zee lose an average of 2.5 months of life expectancy due to exposure to particulate matter and nitrogen dioxide. Furthermore, approximately 4% of future lung cancer cases and 3% of childhood asthma cases in the immediate area are attributable to the plant's current emissions (Geelen et al., 2023). 
-Another reason this is relevant has to do with international guidelines. Currently, the Netherlands meets PM2.5 emission standards that are imposed by the European Union (EU). But the value that the World Health Organization (WHO) advises was exceeded in the whole country in 2023 (CLO, 2024b). Furthermore, the EU is set to lower its PM2.5 emission standards from 25 µg/m³ to 10 µg/m³ by the year 2030.  Since these future EU standards are not yet met everywhere across the Netherlands, Dutch policy towards reducing PM2.5 emissions might have to become stricter in the upcoming years.
+Include the following:
 
+-   Why is this relevant?
+
+-   ...
 
 # Part 2 - Data Sourcing
 
@@ -54,7 +53,7 @@ Preferably from a URL, but if not, make sure to download the data and store it i
 ```{r loading_data}
 #dataset <- midwest
 library(readr)
-DataExtract2 <- read_delim("data/DataExtract2.csv", 
+concentratie_2024_PFS10_Haarlemmermeer <- read_delim("data/concentratie_2024_PFS10_Haarlemmermeer.csv", 
 delim = ";", escape_double = FALSE, trim_ws = TRUE)
 Part1 <- read_csv("data/DataExtract.csv")
 Part2 <- read_csv("data/DataExtract2.csv")
@@ -92,10 +91,8 @@ These are things that are usually included in the metadata of the dataset. For y
 Think of things like:
 
 -   Do the variables contain health information or SES information?
-The variables we used do contain both health information and SES information, 
 
 -   Have they been measured by interviewing individuals or is the data coming from administrative sources?
-
 
 *For the sake of this example, I will continue with the assignment...*
 
@@ -114,15 +111,8 @@ Please use a separate 'R block' of code for each type of cleaning. So, e.g. one 
 ## 3.2 Generate necessary variables
 
 Variable 1
-<<<<<<< Updated upstream
 ```{r}
 names(combined_data)[names(combined_data) == "Affected Population"] <- "affected_population"
-=======
-
-```{r gen_var1}
-DataExtract2
-Variable 2
->>>>>>> Stashed changes
 ```
 
 
@@ -136,14 +126,17 @@ names(combined_data)[names(combined_data) == "Year"] <- "year"
 ## 3.3 Visualize temporal variation
 
 ```{r}
-# create data
-xValue <- combined_data$year
-yValue <- combined_data$affected_population
-#data <- combined_data(xValue, yValue)
+# Create data
+# data <- combined_data(
+  name=combined_data$year 
+  value=combined_data$affected_population
+  
 
 require(ggplot2)
-#plot
-ggplot(combined_data, aes(x=xValue, y=yValue)) + geom_line()
+
+# Barplot
+ggplot(combined_data, aes(x=name, y=value)) + 
+  geom_bar(stat = "identity")
 
 ```
 
@@ -199,9 +192,4 @@ Provide the link to your PUBLIC repository here: ...
 
 ## 5.2 Reference list
 
-1.	Janssen, N. et al., (2013). Short-term effects of PM2.5, PM10 and PM2.5–10 on daily mortality in the Netherlands. The Science of the Total Environment, 463–464, 20–26. https://doi.org/10.1016/j.scitotenv.2013.05.062
-2.	Ultrafijnstof in de lucht. (2024, December 11). Compendium Voor De Leefomgeving. Retrieved June 8, 2026, from https://www.clo.nl/indicatoren/nl062301-ultrafijnstof-in-de-lucht#referentie
-3.	Geelen, L., Bogers, R., Elberse, J., Houthuijs, D., Montforts, M., & Schuijff, M. (2023). De bijdrage van Tata Steel Nederland aan de gezondheidsrisico’s van omwonenden en de kwaliteit van hun leefomgeving. In Rivm (National Institute for Public Health and the Environment). https://doi.org/10.21945/rivm-2023-0171
-4.	Fijnere fractie van fijn stof (PM2,5) in lucht, 2009-2023. (2024b, July 10). CLO. Retrieved June 8, 2026, from https://www.clo.nl/indicatoren/nl053209-fijnere-fractie-van-fijn-stof-pm25-in-lucht-2009-2023#referentie
-5.	World Health Organization (WHO). (2006). Air quality guidelines for particulate matter, ozone, nitrogen dioxide and sulfur dioxide. https://www.who.int/publications/i/item/WHO-SDE-PHE-OEH-06-02
-
+Use APA referencing throughout your document.
