@@ -1,5 +1,0 @@
----
-title: "Sophie"
-output: html_document
----
-
