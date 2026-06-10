@@ -111,8 +111,6 @@ require(stringr)
 require(tidyverse)
 length(test$code)
 test <- test %>%
-  dplyr::filter(Year > 2012)
-
 test <- test %>%
   dplyr::filter(str_length(code) == 5
 )
