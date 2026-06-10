@@ -103,11 +103,13 @@ Think of things like:
 Say we want to include only larger distances (above 2) in our dataset, we can filter for this.
 
 ```{r data_cleaning}
+
 cleaned_pollution_data<- combined_data
 cleaned_pollution_data$code <- cleaned_pollution_data$`NUTS Code`
+
+
+combined_data$code <- combined_data$`NUTS Code`
 require(stringr)
-#test <- test %>% filter(
-#       str_detect(^NL(\\d{3}|\\d{2}[A-Z])$))
 require(tidyverse)
 length(cleaned_pollution_data$code)
 cleaned_pollution_data <- cleaned_pollution_data %>%
@@ -122,6 +124,10 @@ cleaned_pollution_data <- cleaned_pollution_data %>%
     `Description Of Age Group` == ">= 30 years of age",
     Scenario                   == "Baseline from WHO 2021 AQG"
   )
+length(combined_data$code)
+combined_data <- combined_data %>%
+  dplyr::filter(str_length(code) == 5
+)
 ```
 
 Please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
@@ -147,14 +153,23 @@ names(combined_data)[names(combined_data) == "Year"] <- "year"
 # Create data
 # data <- combined_data(
   name=combined_data$year 
-  value=combined_data$affected_population
+  value=combined_data$`Air Pollution Population Weighted Average [ug/m3]`
   
 
 require(ggplot2)
 
 # Barplot
 ggplot(combined_data, aes(x=name, y=value)) + 
-  geom_bar(stat = "identity")
+  geom_bar(stat = "identity",
+           fill = "lightpink",
+           colour = "purple") +
+  labs(
+    title = "test",
+    y = "Air Pollution Population Weighted Average [ug/m3]",
+    x = "Year"
+  )+
+  theme_minimal()
+
 
 ```
 
