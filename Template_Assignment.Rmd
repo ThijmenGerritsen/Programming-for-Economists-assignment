@@ -103,24 +103,25 @@ Think of things like:
 Say we want to include only larger distances (above 2) in our dataset, we can filter for this.
 
 ```{r data_cleaning}
-test<- combined_data
-test$code <- test$`NUTS Code`
+cleaned_pollution_data<- combined_data
+cleaned_pollution_data$code <- cleaned_pollution_data$`NUTS Code`
 require(stringr)
 #test <- test %>% filter(
 #       str_detect(^NL(\\d{3}|\\d{2}[A-Z])$))
 require(tidyverse)
-length(test$code)
-test <- test %>%
-test <- test %>%
+length(cleaned_pollution_data$code)
+cleaned_pollution_data <- cleaned_pollution_data %>%
   dplyr::filter(str_length(code) == 5
 )
-
-
-test <- test %>%
-  dplyr::filter(grepl("^[A-Z]{2}[0-9]{3}$", code)
-)
-
-
+cleaned_pollution_data <- cleaned_pollution_data %>%
+  filter(
+    Category                   == "Mortality",
+    Outcome                    == "All causes",
+    `Health Indicator`         == "Attributable deaths (AD)",
+    Sex                        == "Total",
+    `Description Of Age Group` == ">= 30 years of age",
+    Scenario                   == "Baseline from WHO 2021 AQG"
+  )
 ```
 
 Please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
