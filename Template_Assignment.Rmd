@@ -111,8 +111,15 @@ require(stringr)
 require(tidyverse)
 length(test$code)
 test <- test %>%
+test <- test %>%
   dplyr::filter(str_length(code) == 5
 )
+
+
+test <- test %>%
+  dplyr::filter(grepl("^[A-Z]{2}[0-9]{3}$", code)
+)
+
 
 ```
 
