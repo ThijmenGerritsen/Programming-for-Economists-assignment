@@ -145,7 +145,16 @@ require(ggplot2)
 
 # Barplot
 ggplot(combined_data, aes(x=name, y=value)) + 
-  geom_bar(stat = "identity")
+  geom_bar(stat = "identity",
+           fill = "lightpink",
+           colour = "purple") +
+  labs(
+    title = "test",
+    y = "Air Pollution Population Weighted Average [ug/m3]",
+    x = "Year"
+  )+
+  theme_minimal()
+
 
 ```
 
