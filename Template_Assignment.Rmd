@@ -111,16 +111,8 @@ require(stringr)
 require(tidyverse)
 length(test$code)
 test <- test %>%
-test <- test %>%
   dplyr::filter(str_length(code) == 5
 )
-
-
-test <- test %>%
-  dplyr::filter(grepl("^[A-Z]{2}[0-9]{3}$", code)
-)
-
-
 ```
 
 Please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
