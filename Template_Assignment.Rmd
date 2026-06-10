@@ -103,7 +103,17 @@ Think of things like:
 Say we want to include only larger distances (above 2) in our dataset, we can filter for this.
 
 ```{r data_cleaning}
-mean(dataset$percollege)
+test<- combined_data
+test$code <- test$`NUTS Code`
+require(stringr)
+#test <- test %>% filter(
+#       str_detect(^NL(\\d{3}|\\d{2}[A-Z])$))
+require(tidyverse)
+length(test$code)
+test <- test %>%
+  dplyr::filter(str_length(code) == 5
+)
+
 ```
 
 Please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
