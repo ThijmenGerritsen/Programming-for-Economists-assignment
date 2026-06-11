@@ -154,12 +154,18 @@ names(combined_data)[names(combined_data) == "Year"] <- "year"
 # data <- combined_data(
   name=combined_data$year 
   value=combined_data$`Air Pollution Population Weighted Average [ug/m3]`
-  
+
+combined_data <-  combined_data %>% filter("Total" == Sex)
+combined_data <-  combined_data %>% filter("All causes" == Outcome)
+
+combined_data <-  
+  combined_data %>% filter("Attributable deaths" == str_match(combined_data$`Health Indicator`, "Attributable deaths"))
+
 
 require(ggplot2)
 
 # Barplot
-ggplot(combined_data, aes(x=name, y=value)) + 
+ggplot(combined_data, aes(x=year, y=`Air Pollution Population Weighted Average [ug/m3]`)) + 
   geom_bar(stat = "identity",
            fill = "lightpink",
            colour = "purple") +
