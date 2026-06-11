@@ -157,20 +157,26 @@ names(combined_data)[names(combined_data) == "Year"] <- "year"
 
 combined_data <-  combined_data %>% filter("Total" == Sex)
 combined_data <-  combined_data %>% filter("All causes" == Outcome)
+combined_data <- combined_data %>% filter(str_detect(`Degree Of Urbanisation`, "All Areas", negate = TRUE))
 
-combined_data <-  
-  combined_data %>% filter("Attributable deaths" == str_match(combined_data$`Health Indicator`, "Attributable deaths"))
+combined_data <-  combined_data %>% filter("Attributable deaths" == str_match(combined_data$`Health Indicator`, "Attributable deaths"))
+
+
+combined_data <- combined_data %>% filter(str_detect(`Health Indicator`, "Attributable deaths"))
 
 
 require(ggplot2)
 
 # Barplot
 ggplot(combined_data, aes(x=year, y=`Air Pollution Population Weighted Average [ug/m3]`)) + 
-  geom_bar(stat = "identity",
+  geom_bar(stat = "summary", fun = "mean",
            fill = "lightpink",
            colour = "purple") +
+  
+  geom_smooth(method = "lm", color = "blue", linewidth = 1) +
+  
   labs(
-    title = "test",
+    title = "AIR POLLUTION",
     y = "Air Pollution Population Weighted Average [ug/m3]",
     x = "Year"
   )+
@@ -192,19 +198,17 @@ Here you provide a description of why the plot above is relevant to your specifi
 What is the poverty rate by state?
 
 ```{r visualise_subpopulations}
-dataset$inmetro <- dataset$inmetro %>% as.factor()
-# Boxplot of poverty rate by state using the 'midwest' dataset
-ggplot(dataset, aes(x = inmetro, y = percadultpoverty)) +
-  geom_boxplot() +
+
+ggplot(combined_data, aes(x = `Degree Of Urbanisation`, y = `Air Pollution Population Weighted Average [ug/m3]`)) +
+
   labs(
-    title = "Distribution of Poverty Rates by Metropolitan status (Midwest counties)",
-    x = "Metropolitan Area",
-    y = "Poverty Rate of Adults (%)"
+    title = "Distribution of Air Pollution Levels by Degree of Urbanisation",
+    subtitle = "Comparing regional exposure across Dutch sub-populations",
+    x = "Degree of Urbanisation",
+    y = "Population-Weighted Air Pollution (ug/m3)"
   ) +
-  theme_minimal() +
-  theme(
-    legend.position = "right"
-  )
+  theme_minimal()
+  
 ```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
