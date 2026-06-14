@@ -132,6 +132,7 @@ combined_data <- combined_data %>%
 
 Please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
 
+
 ## 3.2 Generate necessary variables
 
 Variable 1
@@ -154,29 +155,17 @@ names(combined_data)[names(combined_data) == "Year"] <- "year"
 # data <- combined_data(
   name=combined_data$year 
   value=combined_data$`Air Pollution Population Weighted Average [ug/m3]`
-
-combined_data <-  combined_data %>% filter("Total" == Sex)
-combined_data <-  combined_data %>% filter("All causes" == Outcome)
-combined_data <- combined_data %>% filter(str_detect(`Degree Of Urbanisation`, "All Areas", negate = TRUE))
-
-combined_data <-  combined_data %>% filter("Attributable deaths" == str_match(combined_data$`Health Indicator`, "Attributable deaths"))
-
-
-combined_data <- combined_data %>% filter(str_detect(`Health Indicator`, "Attributable deaths"))
-
+  
 
 require(ggplot2)
 
 # Barplot
-ggplot(combined_data, aes(x=year, y=`Air Pollution Population Weighted Average [ug/m3]`)) + 
-  geom_bar(stat = "summary", fun = "mean",
+ggplot(combined_data, aes(x=name, y=value)) + 
+  geom_bar(stat = "identity",
            fill = "lightpink",
            colour = "purple") +
-  
-  geom_smooth(method = "lm", color = "blue", linewidth = 1) +
-  
   labs(
-    title = "AIR POLLUTION",
+    title = "test",
     y = "Air Pollution Population Weighted Average [ug/m3]",
     x = "Year"
   )+
@@ -186,8 +175,25 @@ ggplot(combined_data, aes(x=year, y=`Air Pollution Population Weighted Average [
 ```
 
 ## 3.4 Visualize spatial variation
+```{r}
+Ziekenhuisopnamen_diagnose_indeling_VTV_regio_02062026_164323 <- read_delim("data/Ziekenhuisopnamen__diagnose_indeling_VTV__regio_02062026_164323.csv", 
+     delim = ";", escape_double = FALSE, trim_ws = TRUE, 
+     skip = 3)
+```
+```{r}
+install.packages("tmap")
+```
 
 ```{r visualise_map}
+library(tmap)
+
+data(World)
+
+World[World$name == "Netherlands", ]
+
+tm_shape(World[World$name == "Netherlands", ]) +
+  tm_fill("orange") +
+  tm_borders()
 
 ```
 
@@ -198,17 +204,19 @@ Here you provide a description of why the plot above is relevant to your specifi
 What is the poverty rate by state?
 
 ```{r visualise_subpopulations}
-
-ggplot(combined_data, aes(x = `Degree Of Urbanisation`, y = `Air Pollution Population Weighted Average [ug/m3]`)) +
-
+dataset$inmetro <- dataset$inmetro %>% as.factor()
+# Boxplot of poverty rate by state using the 'midwest' dataset
+ggplot(dataset, aes(x = inmetro, y = percadultpoverty)) +
+  geom_boxplot() +
   labs(
-    title = "Distribution of Air Pollution Levels by Degree of Urbanisation",
-    subtitle = "Comparing regional exposure across Dutch sub-populations",
-    x = "Degree of Urbanisation",
-    y = "Population-Weighted Air Pollution (ug/m3)"
+    title = "Distribution of Poverty Rates by Metropolitan status (Midwest counties)",
+    x = "Metropolitan Area",
+    y = "Poverty Rate of Adults (%)"
   ) +
-  theme_minimal()
-  
+  theme_minimal() +
+  theme(
+    legend.position = "right"
+  )
 ```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
