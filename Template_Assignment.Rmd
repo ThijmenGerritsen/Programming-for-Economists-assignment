@@ -135,10 +135,7 @@ Variable 1
 names(combined_data)[names(combined_data) == "Affected Population"] <- "affected_population"
 ```
 
-
-DataExtract2
 Variable 2
-
 ```{r gen_var2}
 names(combined_data)[names(combined_data) == "Year"] <- "year"
 ```
