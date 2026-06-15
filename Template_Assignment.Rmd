@@ -175,21 +175,20 @@ Ziekenhuisopnamen_diagnose_indeling_VTV_regio_02062026_164323 <- read_delim("dat
      delim = ";", escape_double = FALSE, trim_ws = TRUE, 
      skip = 3)
 ```
-```{r}
-install.packages("tmap")
-```
+
 
 ```{r visualise_map}
-library(tmap)
+library(sf)
+library(ggplot2)
 
-data(World)
+# Load CBS GGD-regio map for 2023 (whole NL), WGS84
+ggd <- st_read("https://cartomap.github.io/nl/wgs84/ggdregio_2023.geojson")
 
-World[World$name == "Netherlands", ]
-
-tm_shape(World[World$name == "Netherlands", ]) +
-  tm_fill("orange") +
-  tm_borders()
-
+# Plot
+ggplot(ggd) +
+  geom_sf(fill = "lightblue", color = "white", linewidth = 0.2) +
+  theme_void() +
+  labs(title = "GGD-regio's Nederland")
 ```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
