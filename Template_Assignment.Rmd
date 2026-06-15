@@ -14,14 +14,9 @@ output: pdf_document
 ```
 
 ```{r packages}
-
-#testing 
-
 require(tidyverse)
 require(rmarkdown)
 require(yaml)
-
-
 ```
 
 # Title Page
@@ -132,6 +127,7 @@ combined_data <- combined_data %>%
 
 Please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
 
+
 ## 3.2 Generate necessary variables
 
 Variable 1
@@ -139,10 +135,7 @@ Variable 1
 names(combined_data)[names(combined_data) == "Affected Population"] <- "affected_population"
 ```
 
-
-DataExtract2
 Variable 2
-
 ```{r gen_var2}
 names(combined_data)[names(combined_data) == "Year"] <- "year"
 ```
@@ -154,29 +147,17 @@ names(combined_data)[names(combined_data) == "Year"] <- "year"
 # data <- combined_data(
   name=combined_data$year 
   value=combined_data$`Air Pollution Population Weighted Average [ug/m3]`
-
-combined_data <-  combined_data %>% filter("Total" == Sex)
-combined_data <-  combined_data %>% filter("All causes" == Outcome)
-combined_data <- combined_data %>% filter(str_detect(`Degree Of Urbanisation`, "All Areas", negate = TRUE))
-
-combined_data <-  combined_data %>% filter("Attributable deaths" == str_match(combined_data$`Health Indicator`, "Attributable deaths"))
-
-
-combined_data <- combined_data %>% filter(str_detect(`Health Indicator`, "Attributable deaths"))
-
+  
 
 require(ggplot2)
 
 # Barplot
-ggplot(combined_data, aes(x=year, y=`Air Pollution Population Weighted Average [ug/m3]`)) + 
-  geom_bar(stat = "summary", fun = "mean",
+ggplot(combined_data, aes(x=name, y=value)) + 
+  geom_bar(stat = "identity",
            fill = "lightpink",
            colour = "purple") +
-  
-  geom_smooth(method = "lm", color = "blue", linewidth = 1) +
-  
   labs(
-    title = "AIR POLLUTION",
+    title = "test",
     y = "Air Pollution Population Weighted Average [ug/m3]",
     x = "Year"
   )+
@@ -186,9 +167,25 @@ ggplot(combined_data, aes(x=year, y=`Air Pollution Population Weighted Average [
 ```
 
 ## 3.4 Visualize spatial variation
+```{r}
+Ziekenhuisopnamen_diagnose_indeling_VTV_regio_02062026_164323 <- read_delim("data/Ziekenhuisopnamen__diagnose_indeling_VTV__regio_02062026_164323.csv", 
+     delim = ";", escape_double = FALSE, trim_ws = TRUE, 
+     skip = 3)
+```
+
 
 ```{r visualise_map}
+library(sf)
+library(ggplot2)
 
+# Load CBS GGD-regio map for 2023 (whole NL), WGS84
+ggd <- st_read("https://cartomap.github.io/nl/wgs84/ggdregio_2023.geojson")
+
+# Plot
+ggplot(ggd) +
+  geom_sf(fill = "lightblue", color = "white", linewidth = 0.2) +
+  theme_void() +
+  labs(title = "GGD-regio's Nederland")
 ```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
@@ -198,6 +195,7 @@ Here you provide a description of why the plot above is relevant to your specifi
 What is the poverty rate by state?
 
 ```{r visualise_subpopulations}
+<<<<<<< HEAD
 
 require(ggplot2)
 
@@ -217,6 +215,12 @@ geom_boxplot(
   ) +
   theme_minimal() 
   
+=======
+  theme_minimal() +
+  theme(
+    legend.position = "right"
+  )
+>>>>>>> 12a5ff3ea08cd108da6c5cbd4b7203713dc80422
 ```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
