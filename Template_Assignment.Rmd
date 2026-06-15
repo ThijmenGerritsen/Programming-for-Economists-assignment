@@ -29,6 +29,8 @@ Include your tutorial lecturer's name
 
 # Part 1 - Identify a Social Problem
 
+
+
 ## 1.1 Describe the Social Problem
 
 Include the following:
@@ -44,7 +46,6 @@ Include the following:
 Preferably from a URL, but if not, make sure to download the data and store it in a shared location that you can load the data in from. Do not store the data in a folder you include in the Github repository!
 
 ```{r loading_data}
-#dataset <- midwest
 library(readr)
 concentratie_2024_PFS10_Haarlemmermeer <- read_delim("data/concentratie_2024_PFS10_Haarlemmermeer.csv", 
 delim = ";", escape_double = FALSE, trim_ws = TRUE)
@@ -116,10 +117,7 @@ cleaned_pollution_data <- cleaned_pollution_data %>%
     `Description Of Age Group` == ">= 30 years of age",
     Scenario                   == "Baseline from WHO 2021 AQG"
   )
-length(combined_data$code)
-combined_data <- combined_data %>%
-  dplyr::filter(str_length(code) == 5
-)
+
 ```
 
 Please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
@@ -129,27 +127,26 @@ Please use a separate 'R block' of code for each type of cleaning. So, e.g. one 
 Variable 1
 
 ```{r}
-names(combined_data)[names(combined_data) == "Affected Population"] <- "affected_population"
+names(cleaned_pollution_data)[names(cleaned_pollution_data) == "Affected Population"] <- "affected_population"
 ```
 
 Variable 2
 ```{r gen_var2}
-names(combined_data)[names(combined_data) == "Year"] <- "year"
+names(cleaned_pollution_data)[names(cleaned_pollution_data) == "Year"] <- "year"
 ```
 
 ## 3.3 Visualize temporal variation
 
 ```{r}
-# Create data
 # data <- cleaned_pollution_data(
-  name=cleaned_pollution_data$Year 
+  name=cleaned_pollution_data$year 
   value=cleaned_pollution_data$`Air Pollution Population Weighted Average [ug/m3]`
   
 
 require(ggplot2)
 
 # Barplot
-ggplot(cleaned_pollution_data, aes(x=Year, y=`Air Pollution Population Weighted Average [ug/m3]`)) + 
+ggplot(cleaned_pollution_data, aes(x=year, y=`Air Pollution Population Weighted Average [ug/m3]`)) + 
   geom_bar(stat = "summary", fun = "mean",
            fill = "lightpink",
            colour = "purple") +
@@ -162,8 +159,6 @@ ggplot(cleaned_pollution_data, aes(x=Year, y=`Air Pollution Population Weighted 
     x = "Year"
   )+
   theme_minimal()
-
-
 ```
 
 ## 3.4 Visualize spatial variation
