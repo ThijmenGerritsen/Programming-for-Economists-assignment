@@ -157,10 +157,16 @@ require(ggplot2)
 # Barplot
 ggplot(combined_data, aes(x=name, y=value)) + 
   geom_bar(stat = "identity",
+ggplot(combined_data, aes(x=year, y=`Air Pollution Population Weighted Average [ug/m3]`)) + 
+  geom_bar(stat = "summary", fun = "mean",
            fill = "lightpink",
            colour = "purple") +
+  
+  geom_smooth(method = "lm", color = "blue", linewidth = 1) +
+  
   labs(
     title = "test",
+    title = "AIR POLLUTION",
     y = "Air Pollution Population Weighted Average [ug/m3]",
     x = "Year"
   )+
@@ -202,15 +208,33 @@ dataset$inmetro <- dataset$inmetro %>% as.factor()
 # Boxplot of poverty rate by state using the 'midwest' dataset
 ggplot(dataset, aes(x = inmetro, y = percadultpoverty)) +
   geom_boxplot() +
+
+require(ggplot2)
+
+ggplot(combined_data, aes(x = `Degree Of Urbanisation`, y = `Air Pollution Population Weighted Average [ug/m3]`)) +
+  
+geom_boxplot(
+           fill = "lightpink",
+           colour = "purple",
+           alpha = 0.7) +
+  coord_flip() +
+
   labs(
     title = "Distribution of Poverty Rates by Metropolitan status (Midwest counties)",
     x = "Metropolitan Area",
     y = "Poverty Rate of Adults (%)"
+    title = "Distribution of Air Pollution Levels by Degree of Urbanisation",
+    subtitle = "Comparing regional exposure across Dutch sub-populations",
+    x = "Degree of Urbanisation",
+    y = "Population-Weighted Air Pollution (ug/m3)"
   ) +
   theme_minimal() +
   theme(
     legend.position = "right"
   )
+  theme_minimal() 
+  
+
 ```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
