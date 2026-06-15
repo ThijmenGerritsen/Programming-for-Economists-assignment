@@ -199,7 +199,15 @@ What is the poverty rate by state?
 
 ```{r visualise_subpopulations}
 
+require(ggplot2)
+
 ggplot(combined_data, aes(x = `Degree Of Urbanisation`, y = `Air Pollution Population Weighted Average [ug/m3]`)) +
+  
+geom_boxplot(
+           fill = "lightpink",
+           colour = "purple",
+           alpha = 0.7) +
+  coord_flip() +
 
   labs(
     title = "Distribution of Air Pollution Levels by Degree of Urbanisation",
@@ -207,7 +215,7 @@ ggplot(combined_data, aes(x = `Degree Of Urbanisation`, y = `Air Pollution Popul
     x = "Degree of Urbanisation",
     y = "Population-Weighted Air Pollution (ug/m3)"
   ) +
-  theme_minimal()
+  theme_minimal() 
   
 ```
 
