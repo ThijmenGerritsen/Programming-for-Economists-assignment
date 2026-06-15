@@ -152,12 +152,15 @@ names(combined_data)[names(combined_data) == "Year"] <- "year"
 require(ggplot2)
 
 # Barplot
-ggplot(combined_data, aes(x=name, y=value)) + 
-  geom_bar(stat = "identity",
+ggplot(combined_data, aes(x=year, y=`Air Pollution Population Weighted Average [ug/m3]`)) + 
+  geom_bar(stat = "summary", fun = "mean",
            fill = "lightpink",
            colour = "purple") +
+  
+  geom_smooth(method = "lm", color = "blue", linewidth = 1) +
+  
   labs(
-    title = "test",
+    title = "AIR POLLUTION",
     y = "Air Pollution Population Weighted Average [ug/m3]",
     x = "Year"
   )+
