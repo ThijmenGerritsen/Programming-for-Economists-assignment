@@ -29,8 +29,6 @@ Include your tutorial lecturer's name
 
 # Part 1 - Identify a Social Problem
 
-Use APA referencing throughout your document. [Here's a link to some explanation.](https://www.mendeley.com/guides/apa-citation-guide/)
-
 ## 1.1 Describe the Social Problem
 
 Include the following:
@@ -144,15 +142,15 @@ names(combined_data)[names(combined_data) == "Year"] <- "year"
 
 ```{r}
 # Create data
-# data <- combined_data(
-  name=combined_data$year 
-  value=combined_data$`Air Pollution Population Weighted Average [ug/m3]`
+# data <- cleaned_pollution_data(
+  name=cleaned_pollution_data$Year 
+  value=cleaned_pollution_data$`Air Pollution Population Weighted Average [ug/m3]`
   
 
 require(ggplot2)
 
 # Barplot
-ggplot(combined_data, aes(x=year, y=`Air Pollution Population Weighted Average [ug/m3]`)) + 
+ggplot(cleaned_pollution_data, aes(x=Year, y=`Air Pollution Population Weighted Average [ug/m3]`)) + 
   geom_bar(stat = "summary", fun = "mean",
            fill = "lightpink",
            colour = "purple") +
@@ -227,7 +225,7 @@ Here you provide a description of why the plot above is relevant to your specifi
 Analyze the relationship between two variables.
 
 ```{r analysis}
-
+#
 ```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
