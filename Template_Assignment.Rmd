@@ -14,15 +14,9 @@ output: pdf_document
 ```
 
 ```{r packages}
-
-#testing 
-test
-
 require(tidyverse)
 require(rmarkdown)
 require(yaml)
-
-
 ```
 
 # Title Page
