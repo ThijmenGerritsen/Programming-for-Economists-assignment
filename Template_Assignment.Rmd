@@ -195,7 +195,6 @@ Here you provide a description of why the plot above is relevant to your specifi
 What is the poverty rate by state?
 
 ```{r visualise_subpopulations}
-<<<<<<< HEAD
 
 require(ggplot2)
 
@@ -215,12 +214,7 @@ geom_boxplot(
   ) +
   theme_minimal() 
   
-=======
-  theme_minimal() +
-  theme(
-    legend.position = "right"
-  )
->>>>>>> 12a5ff3ea08cd108da6c5cbd4b7203713dc80422
+
 ```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
