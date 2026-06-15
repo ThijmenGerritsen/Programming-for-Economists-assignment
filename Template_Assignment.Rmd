@@ -238,3 +238,43 @@ Provide the link to your PUBLIC repository here: ...
 ## 5.2 Reference list
 
 Use APA referencing throughout your document.
+
+
+```{r}
+# 1. Laad benodigde packages
+library(sf)
+library(ggplot2)
+library(dplyr)
+
+# 2. Laad NUTS3-kaart van Europa en filter op Nederland
+nuts3_all <- st_read("https://github.com/iiasa/scse-geojson/raw/main/nuts/NUTS_RG_03M_2024_4326.geojson")
+nuts3_nl <- nuts3_all %>% filter(CNTR_CODE == "NL")
+
+# 3. Bepaal het meest recente jaar in je data
+recent_jaar <- max(combined_data$year, na.rm = TRUE)
+
+# 4. Selecteer de juiste kolom (let op: exacte naam met 'm3')
+data_heatmap <- combined_data %>%
+  filter(year == recent_jaar) %>%
+  select(code, 
+         concentration = `Air Pollution Population Weighted Average [ug/m3]`)
+
+# 5. Koppel aan de kaart
+nuts3_merged <- nuts3_nl %>%
+  left_join(data_heatmap, by = c("NUTS_ID" = "code"))
+
+# 6. Plot de spatial heatmap
+ggplot(nuts3_merged) +
+  geom_sf(aes(fill = concentration), color = "white", size = 0.2) +
+  scale_fill_viridis_c(option = "plasma", 
+                       na.value = "lightgrey",
+                       name = "PM2.5 (µg/m³)") +
+  labs(title = paste("Luchtvervuiling per NUTS3-regio,", recent_jaar),
+       subtitle = "Populatiegewogen gemiddelde concentratie") +
+  theme_void() +
+  theme(legend.position = "right")
+```
+
+```{r}
+
+```
