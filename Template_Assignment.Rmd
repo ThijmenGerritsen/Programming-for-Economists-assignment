@@ -134,6 +134,8 @@ Variable 1
 names(combined_data)[names(combined_data) == "Affected Population"] <- "affected_population"
 ```
 
+
+DataExtract2
 Variable 2
 
 ```{r gen_var2}
@@ -152,6 +154,8 @@ names(combined_data)[names(combined_data) == "Year"] <- "year"
 require(ggplot2)
 
 # Barplot
+ggplot(combined_data, aes(x=name, y=value)) + 
+  geom_bar(stat = "identity",
 ggplot(combined_data, aes(x=year, y=`Air Pollution Population Weighted Average [ug/m3]`)) + 
   geom_bar(stat = "summary", fun = "mean",
            fill = "lightpink",
@@ -160,6 +164,7 @@ ggplot(combined_data, aes(x=year, y=`Air Pollution Population Weighted Average [
   geom_smooth(method = "lm", color = "blue", linewidth = 1) +
   
   labs(
+    title = "test",
     title = "AIR POLLUTION",
     y = "Air Pollution Population Weighted Average [ug/m3]",
     x = "Year"
@@ -198,6 +203,10 @@ Here you provide a description of why the plot above is relevant to your specifi
 What is the poverty rate by state?
 
 ```{r visualise_subpopulations}
+dataset$inmetro <- dataset$inmetro %>% as.factor()
+# Boxplot of poverty rate by state using the 'midwest' dataset
+ggplot(dataset, aes(x = inmetro, y = percadultpoverty)) +
+  geom_boxplot() +
 
 require(ggplot2)
 
@@ -210,11 +219,18 @@ geom_boxplot(
   coord_flip() +
 
   labs(
+    title = "Distribution of Poverty Rates by Metropolitan status (Midwest counties)",
+    x = "Metropolitan Area",
+    y = "Poverty Rate of Adults (%)"
     title = "Distribution of Air Pollution Levels by Degree of Urbanisation",
     subtitle = "Comparing regional exposure across Dutch sub-populations",
     x = "Degree of Urbanisation",
     y = "Population-Weighted Air Pollution (ug/m3)"
   ) +
+  theme_minimal() +
+  theme(
+    legend.position = "right"
+  )
   theme_minimal() 
   
 
@@ -245,3 +261,43 @@ Provide the link to your PUBLIC repository here: ...
 ## 5.2 Reference list
 
 Use APA referencing throughout your document.
+
+
+```{r}
+# 1. Laad benodigde packages
+library(sf)
+library(ggplot2)
+library(dplyr)
+
+# 2. Laad NUTS3-kaart van Europa en filter op Nederland
+nuts3_all <- st_read("https://github.com/iiasa/scse-geojson/raw/main/nuts/NUTS_RG_03M_2024_4326.geojson")
+nuts3_nl <- nuts3_all %>% filter(CNTR_CODE == "NL")
+
+# 3. Bepaal het meest recente jaar in je data
+recent_jaar <- max(combined_data$year, na.rm = TRUE)
+
+# 4. Selecteer de juiste kolom (let op: exacte naam met 'm3')
+data_heatmap <- combined_data %>%
+  filter(year == recent_jaar) %>%
+  select(code, 
+         concentration = `Air Pollution Population Weighted Average [ug/m3]`)
+
+# 5. Koppel aan de kaart
+nuts3_merged <- nuts3_nl %>%
+  left_join(data_heatmap, by = c("NUTS_ID" = "code"))
+
+# 6. Plot de spatial heatmap
+ggplot(nuts3_merged) +
+  geom_sf(aes(fill = concentration), color = "white", size = 0.2) +
+  scale_fill_viridis_c(option = "plasma", 
+                       na.value = "lightgrey",
+                       name = "PM2.5 (µg/m³)") +
+  labs(title = paste("Luchtvervuiling per NUTS3-regio,", recent_jaar),
+       subtitle = "Populatiegewogen gemiddelde concentratie") +
+  theme_void() +
+  theme(legend.position = "right")
+```
+
+```{r}
+
+```
