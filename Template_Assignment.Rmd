@@ -186,6 +186,63 @@ ggplot(ggd) +
   theme_void() +
   labs(title = "GGD-regio's Nederland")
 ```
+```{r visualise_map}
+library(sf)
+library(dplyr)
+library(stringr)
+library(ggplot2)
+library(readr)
+
+# 1. Download the GGD region map
+ggd_map <- st_read("https://cartomap.github.io/nl/wgs84/ggdregio_2023.geojson", quiet = TRUE)
+
+# 2. Load the hospital admissions data safely without automatic column naming
+raw_hospital_data <- read_delim("data/Ziekenhuisopnamen__diagnose_indeling_VTV__regio_02062026_164323.csv", 
+                                delim = ";", col_names = FALSE, skip = 3)
+
+# 3. Extract the GGD region names and the column for age-standardized Coronary Heart Disease
+# Column 1 (X1) contains regions. Column 31 (X31) contains the target health indicator.
+clean_health_data <- data.frame(
+  raw_region     = raw_hospital_data$X1[9:33],  # Selects exactly the 25 GGD rows (omitting national total)
+  admission_rate = raw_hospital_data$X31[9:33]  # Selects the matching column data
+)
+
+# 4. Convert text data to numbers and clean up the naming suffix
+clean_health_data <- clean_health_data %>%
+  mutate(
+    # Fix Dutch decimals: replace "," with "." so R recognizes them as numbers
+    admission_rate = as.numeric(str_replace(admission_rate, ",", ".")),
+    
+    # Strip away the trailing " (GG)" from text strings
+    clean_region = str_replace(raw_region, " \\(GG\\)", "")
+  )
+
+# 5. Correct administrative text variations to guarantee a perfect map merge
+clean_health_data <- clean_health_data %>%
+  mutate(
+    clean_region = case_when(
+      str_detect(clean_region, "Gelderland-Midden") ~ "Veiligheids- en Gezondheidsregio Gelderland-Midden",
+      str_detect(clean_region, "ZHZ") ~ "Dienst Gezondheid & Jeugd ZHZ",
+      TRUE ~ clean_region
+    )
+  )
+
+# 6. Merge map boundaries and data (Map object on the left side)
+spatial_joined_ggd <- ggd_map %>%
+  left_join(clean_health_data, by = c("statnaam" = "clean_region"))
+
+# 7. Render the inverted spatial heatmap
+ggplot(spatial_joined_ggd) +
+  geom_sf(aes(fill = admission_rate), color = "white", linewidth = 0.2) +
+  # 'direction = -1' flips the palette: low values are light, high values are dark
+  scale_fill_viridis_c(option = "magma", name = "Admissions\nper 10k", direction = -1) +
+  theme_void() +
+  labs(
+    title = "Spatial Variation of Cardiovascular Hospital Admissions",
+    subtitle = "Age-standardized coronary heart disease admissions per 10,000 residents by GGD region",
+    caption = "Source: CBS / VTV-Kompas"
+  )
+```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
 
