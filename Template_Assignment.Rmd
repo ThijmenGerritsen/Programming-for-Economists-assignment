@@ -100,7 +100,6 @@ Say we want to include only larger distances (above 2) in our dataset, we can fi
 cleaned_pollution_data<- combined_data
 cleaned_pollution_data$code <- cleaned_pollution_data$`NUTS Code`
 
-
 combined_data$code <- combined_data$`NUTS Code`
 require(stringr)
 require(tidyverse)
@@ -219,7 +218,48 @@ Here you provide a description of why the plot above is relevant to your specifi
 Analyze the relationship between two variables.
 
 ```{r analysis}
-#
+cleaned_pollution_data <- cleaned_pollution_data %>%
+  mutate(period = ifelse(year < 2020, "Before 2020", "2020 onwards"))
+
+cleaned_pollution_data$period <- factor(
+  cleaned_pollution_data$period,
+  levels = c("Before 2020", "2020 onwards")
+)
+ggplot(cleaned_pollution_data, 
+       aes(x = year, 
+           y = `Air Pollution Population Weighted Average [ug/m3]`)) + 
+  
+  geom_bar(stat = "summary", fun = "mean",
+           aes(fill = period),
+           colour = "purple") +
+  
+  geom_smooth(aes(group = period, color = period),
+              method = "lm", linewidth = 1, se = TRUE) +
+  
+  geom_vline(xintercept = 2019.5,
+             linetype = "dashed",
+             colour = "black",
+             linewidth = 0.8) +
+  
+  annotate("text", x = 2019.7, 
+           y = max(cleaned_pollution_data$`Air Pollution Population Weighted Average [ug/m3]`, 
+                   na.rm = TRUE),
+           label = "COVID-19 (2020)",
+           hjust = 0, vjust = 1, size = 3.5, colour = "black") +
+  
+  scale_fill_manual(values = c("Before 2020" = "lightpink", 
+                                "2020 onwards" = "lightblue")) +
+  scale_color_manual(values = c("Before 2020" = "blue", 
+                                 "2020 onwards" = "darkblue")) +
+  
+  labs(
+    title = "AIR POLLUTION — Pre vs. Post 2020",
+    y = "Air Pollution Population Weighted Average [ug/m3]",
+    x = "Year",
+    fill = "Period",
+    color = "Trend"
+  ) +
+  theme_minimal()
 ```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
