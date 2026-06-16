@@ -254,7 +254,7 @@ recent_jaar <- max(combined_data$year, na.rm = TRUE)
 
 # 4. Selecteer de juiste kolom (let op: exacte naam met 'm3')
 data_heatmap <- combined_data %>%
-  filter(year == recent_jaar) %>%
+  filter(Year == recent_jaar) %>%
   select(code, 
          concentration = `Air Pollution Population Weighted Average [ug/m3]`)
 
@@ -280,31 +280,22 @@ library(sf)
 library(dplyr)
 library(ggplot2)
 
-# 1. Download the COROP map (Matches your NUTS 3 regional names perfectly)
-nl_map <- st_read("https://cartomap.github.io/nl/wgs84/coropgebied_2023.geojson", quiet = TRUE)
+nl_map <- st_read("https://cartomap.github.io/nl/wgs84/coropgebied_2023.geojson")
 
-# 2. Prepare your health data: We must isolate ONE year and ONE summary value per region
-# Otherwise, R tries to stack 20 years of data on top of a single map layer!
-map_data_clean <- combined_data %>%
+map_data_clean <- cleaned_pollution_data %>%
   filter(
     year == 2023, # Pick a single year to visualize on the map
-    Sex == "Total",
-    Outcome == "All causes"
   )
 
-# 3. Join the datasets (Map on the left!)
-# We tell R to match the map's 'statnaam' column with your data's 'NUTS Name' column
 spatial_joined <- nl_map %>%
   left_join(map_data_clean, by = c("statnaam" = "NUTS Name"))
 
-# 4. Generate the heatmap (Choropleth Map)
 ggplot(spatial_joined) +
-  # We tell the map to color (fill) the regions based on air pollution levels
   geom_sf(aes(fill = `Air Pollution Population Weighted Average [ug/m3]`), color = "white", linewidth = 0.2) +
-  scale_fill_viridis_c(option = "magma", name = "Pollution (ug/m3)") +
+  scale_fill_viridis_c(option = "magma", name = "Pollution (ug/m3)", direction = -1) +
   theme_void() +
   labs(
     title = "Spatial Variation of Air Pollution in the Netherlands",
-    subtitle = "Population-weighted PM2.5 averages by NUTS 3 region (2023)"
+    subtitle = "Population-weighted PM2.5 averages by NUTS 3 regions (2023)"
   )
 ```
