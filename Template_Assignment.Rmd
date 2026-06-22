@@ -1,6 +1,6 @@
 ---
 title: "Template"
-author: "Studentnames and studentnumbers here" Marnix Peter Simon Lamers 2894404,Sophie Thijmen Thomas
+author: "Studentnames and studentnumbers here" Marnix Peter Simon Lamers 2894404,Sophie Thijmen Gerritsen 2787153, Thomas
 date: "`r Sys.Date()`"
 output: pdf_document
 ---
@@ -8,9 +8,7 @@ output: pdf_document
 # Set-up your environment
 
 ```{r package_install, include=FALSE}
-#install.packages("tidyverse")
-#install.packages("yaml")
-#install.packages("rmarkdown")
+
 ```
 
 ```{r packages}
