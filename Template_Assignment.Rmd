@@ -351,6 +351,9 @@ Use APA referencing throughout your document.
 
 5.  World Health Organization (WHO). (2006). Air quality guidelines for particulate matter, ozone, nitrogen dioxide and sulfur dioxide. <https://www.who.int/publications/i/item/WHO-SDE-PHE-OEH-06-02>
 
+6. European Environment Agency. (2022). Air Quality Health Risk Assessments. https://www.eea.europa.eu/en/datahub/datahubitem-view/49930245-dc33-4c47-93b8-9512f0622ebc?activeAccordion=1084339
+
+7. Centraal Bureau voor de Statistiek. (2025). Ziekenhuisopnamen; diagnose-indeling VTV, regio. In Centraal Bureau voor de Statistiek. https://www.cbs.nl/nl-nl/cijfers/detail/84523ned
 ```{r}
 # 1. Laad benodigde packages
 library(sf)
