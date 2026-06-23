@@ -8,7 +8,7 @@ output: pdf_document
 # Set-up your environment
 
 ```{r package_install, include=FALSE}
-
+install.packages("patchwork")
 ```
 
 ```{r packages}
@@ -166,56 +166,46 @@ library(dplyr)
 library(stringr)
 library(ggplot2)
 library(readr)
+library(patchwork)  
 
-# 1. Download the GGD region map
-ggd_map <- st_read("https://cartomap.github.io/nl/wgs84/ggdregio_2023.geojson", quiet = TRUE)
+nl_map <- st_read("https://cartomap.github.io/nl/wgs84/coropgebied_2023.geojson")
 
-# 2. Load the hospital admissions data safely without automatic column naming
-raw_hospital_data <- read_delim("data/Ziekenhuisopnamen__diagnose_indeling_VTV__regio_02062026_164323.csv", 
-                                delim = ";", col_names = FALSE, skip = 3)
+map_data_clean <- cleaned_pollution_data %>%
+  filter(year == 2023)
 
-# 3. Extract the GGD region names and the column for age-standardized Coronary Heart Disease
-# Column 1 (X1) contains regions. Column 31 (X31) contains the target health indicator.
-clean_health_data <- data.frame(
-  raw_region     = raw_hospital_data$X1[9:33],  # Selects exactly the 25 GGD rows (omitting national total)
-  admission_rate = raw_hospital_data$X31[9:33]  # Selects the matching column data
-)
+spatial_joined <- nl_map %>%
+  left_join(map_data_clean, by = c("statnaam" = "NUTS Name"))
 
-# 4. Convert text data to numbers and clean up the naming suffix
-clean_health_data <- clean_health_data %>%
-  mutate(
-    # Fix Dutch decimals: replace "," with "." so R recognizes them as numbers
-    admission_rate = as.numeric(str_replace(admission_rate, ",", ".")),
-    
-    # Strip away the trailing " (GG)" from text strings
-    clean_region = str_replace(raw_region, " \\(GG\\)", "")
+plot1 <- ggplot(spatial_joined) +
+  geom_sf(aes(fill = `Air Pollution Population Weighted Average [ug/m3]`), color = "white", linewidth = 0.2) +
+  scale_fill_viridis_c(option = "magma", name = "Pollution (ug/m3)", direction = -1) +
+  theme_void() +
+  theme(
+    text = element_text(size = 6),
+    plot.title = element_text(size = 7, face = "bold"),
+    plot.subtitle = element_text(size = 6)
+  ) +
+  labs(
+    title = "Spatial Variation of Air Pollution",
+    subtitle = "Population-weighted PM2.5 by NUTS 3 region (2023)"
   )
 
-# 5. Correct administrative text variations to guarantee a perfect map merge
-clean_health_data <- clean_health_data %>%
-  mutate(
-    clean_region = case_when(
-      str_detect(clean_region, "Gelderland-Midden") ~ "Veiligheids- en Gezondheidsregio Gelderland-Midden",
-      str_detect(clean_region, "ZHZ") ~ "Dienst Gezondheid & Jeugd ZHZ",
-      TRUE ~ clean_region
-    )
-  )
-
-# 6. Merge map boundaries and data (Map object on the left side)
-spatial_joined_ggd <- ggd_map %>%
-  left_join(clean_health_data, by = c("statnaam" = "clean_region"))
-
-# 7. Render the inverted spatial heatmap
-ggplot(spatial_joined_ggd) +
+plot2 <- ggplot(spatial_joined_ggd) +
   geom_sf(aes(fill = admission_rate), color = "white", linewidth = 0.2) +
-  # 'direction = -1' flips the palette: low values are light, high values are dark
   scale_fill_viridis_c(option = "magma", name = "Admissions\nper 10k", direction = -1) +
   theme_void() +
+  theme(
+    text = element_text(size = 6),
+    plot.title = element_text(size = 7, face = "bold"),
+    plot.subtitle = element_text(size = 6)
+  ) +
   labs(
-    title = "Spatial Variation of Cardiovascular Hospital Admissions",
-    subtitle = "Age-standardized coronary heart disease admissions per 10,000 residents by GGD region",
+    title = "Spatial Variation of Cardiovascular Admissions",
+    subtitle = "Age-standardized CHD admissions per 10,000 by GGD region",
     caption = "Source: CBS / VTV-Kompas"
   )
+
+plot1 + plot2
 ```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
@@ -254,6 +244,7 @@ Here you provide a description of why the plot above is relevant to your specifi
 Analyze the relationship between two variables.
 
 ```{r analysis}
+require(tidyverse) 
 cleaned_pollution_data <- cleaned_pollution_data %>%
   mutate(period = ifelse(year < 2020, "Before 2020", "2020 onwards"))
 
@@ -303,6 +294,12 @@ Relevant because: drop in pollution, less industrial activity, policy change? vi
 # Part 4 - Discussion
 
 ## 4.1 Discuss your findings
+The temporal variation shows that the population-weighted average air pollution concentration of PM2.5 declined over the period 2005-2023. It falls from approximately 17.3 µg/m³ in 2005 to 8.1 µg/m³ in 2023. A downward trend line is visible with low outliers around 2012 and 2020. There are some fluctuations between the years, but the downward trend is very consistent. This suggests that particulate matter emission policy is effective when it comes to reducing PM2.5 emissions between these years.
+
+
+
+The boxplot of the subpopulation variation shows a small and consistent difference in urbanization and air pollution exposure. Urban centers have the highest median population-weighted pollution (~10.6 µg/m³) and the widest spread, while mostly uninhabited and dispersed rural areas sit slightly lower (~10.2–10.4 µg/m³). But the differences between categories are small, this could mean that in the Netherlands, pollution is spatially not very different. This is likely because it is a small country with dense infrastructure and industry. Industrial and travelling emissions are spilled over from dense to sparse areas to some degree. 
+
 
 # Part 5 - Reproducibility
 
