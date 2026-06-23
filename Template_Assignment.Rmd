@@ -72,9 +72,9 @@ These are things that are usually included in the metadata of the dataset. For y
 
 The variables contain health information. 
 In the GGD dataset, the figures "are divided into sex, age, type of admission, region and diagnosis according to the main and subcatagories of the diagnostic classification developed for the Public Health Foresight Study (VTV) of the Dutch National Institute for Public Health and the Environment (RIVM)."(CBS, 2025)
-The NUTS dataset is "based on gridded data: ambient air concentrations and population density data" (Ortiz et al., 2021)
+The NUTS dataset is "based on gridded data: ambient air concentrations and population density data" (Ortiz et al., 2021)*
 
-*For the sake of this example, I will continue with the assignment...*
+*the methodology as described in this 2021 report is that of the one on hand, as per the EEA (2022)
 
 # Part 3 - Quantifying
 
