@@ -116,8 +116,13 @@ Ziekenhuisopnamen_diagnose_indeling_VTV_regio_02062026_164323 <- read_delim("dat
 Variable 1
 
 ```{r}
-#turning variable all-lowercase and into one word 
-names(cleaned_pollution_data)[names(cleaned_pollution_data) == "Affected Population"] <- "affected_population"
+# Creates a new variable 'avg_pollution' that is calculated for each year from 2015 until 2023 where the data set ends
+event_data <- cleaned_pollution_data %>%
+  filter(
+    year >= 2015
+  ) %>%
+  group_by(year) %>%
+  summarise(avg_pollution = mean(`Air Pollution Population Weighted Average [ug/m3]`, na.rm = TRUE))
 ```
 
 Variable 2
