@@ -70,11 +70,9 @@ These are things that are usually included in the metadata of the dataset. For y
 
 ## 2.3 Describe the type of variables included
 
-Think of things like:
-
-- Do the variables contain health information or SES information?
-
-- Have they been measured by interviewing individuals or is the data coming from administrative sources?
+The variables contain health information. 
+In the GGD dataset, the figures "are divided into sex, age, type of admission, region and diagnosis according to the main and subcatagories of the diagnostic classification developed for the Public Health Foresight Study (VTV) of the Dutch National Institute for Public Health and the Environment (RIVM)."(CBS, 2025)
+The NUTS dataset is "based on gridded data: ambient air concentrations and population density data" (Ortiz et al., 2021)
 
 *For the sake of this example, I will continue with the assignment...*
 
@@ -267,8 +265,6 @@ Here you provide a description of why the plot above is relevant to your specifi
 
 Analyze the relationship between two variables.
 
-
-
 ```{r analysis}
 event_data <- cleaned_pollution_data %>%
   filter(
@@ -377,5 +373,5 @@ Use APA referencing throughout your document.
 
 7. Centraal Bureau voor de Statistiek. (2025). Ziekenhuisopnamen; diagnose-indeling VTV, regio. In Centraal Bureau voor de Statistiek. https://www.cbs.nl/nl-nl/cijfers/detail/84523ned
 
-
+8. Ortiz, A. G., Gsella, A., Guerreiro, C., Soares, J., Horálek, J., & European Enviroment Agency. (2021). Health risk assessments of air pollution: Estimations of the 2019 HRA, benefit analysis of reaching specific air quality standards and more (ETC/ATNI 2021/10).
 
