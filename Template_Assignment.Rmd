@@ -161,13 +161,6 @@ ggplot(cleaned_pollution_data, aes(x=Year, y=`Air Pollution Population Weighted 
 
 ## 3.4 Visualize spatial variation
 
-```{r}
-#reading dataset, accounting for European delimination and skipping three rows
-Ziekenhuisopnamen_diagnose_indeling_VTV_regio_02062026_164323 <- read_delim("data/Ziekenhuisopnamen__diagnose_indeling_VTV__regio_02062026_164323.csv", 
-     delim = ";", escape_double = FALSE, trim_ws = TRUE, 
-     skip = 3)
-```
-
 ```{r visualise_map}
 library(sf)
 library(dplyr)
