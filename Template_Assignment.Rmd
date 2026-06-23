@@ -59,14 +59,15 @@ opnamen <- read_csv("data/DataExtract2.csv")
 head(combined_data)
 ```
 
-In this case we see 28 variables, but we miss some information on what units they are in. We also don't know anything about the year/moment in which this data has been captured.
+In the combined_data we see 25 variables with 252,945 data points. The dataset is already filtered for PM2.5 pollution (measured in ug/m3) in the Netherlands specifically and it includes data from the year 2005 to 2023. There are three unique Categories; mortality, morbidity and total burden of disease. Outcome has seven unique cases including stroke and lung cancer as well as an eight case listed as "All causes". Health indicator has 4 categories including Years of life lost and Attributable deaths. Similairly there are four age groups in the dataset. In section 3.1 the data is filtered down to 4806 observations and further used under the variable cleaned_pollution_data.
+
+The Ziekenhuisopnamen dataset shows the hospitalizations across 25 GGD regions in the Netherlands, these are categorized by 48 different diagnosis during the year 2023 specifically. Since there are 48 different diagnosis we chose to focus on one specifically for our spatial visualization.
+
+
 
 ```{r}
 head(opnamen)
 ```
-Hospital admissions per GGD region in the Netherlands in the year 2023. Divided into admissions per 
-
-These are things that are usually included in the metadata of the dataset. For your project, you need to provide us with the information from your metadata that we need to understand your dataset of choice.
 
 ## 2.3 Describe the type of variables included
 
@@ -143,7 +144,7 @@ ggplot(cleaned_pollution_data, aes(x=year, y=`Air Pollution Population Weighted 
   geom_smooth(method = "lm", color = "blue", linewidth = 1) +
   
   labs(
-    title = "AIR POLLUTION",
+    title = "Temporal Variation of Air Pollution",
     y = "Air Pollution Population Weighted Average [ug/m3]",
     x = "Year"
   )+
@@ -216,7 +217,7 @@ nl_map <- st_read("https://cartomap.github.io/nl/wgs84/coropgebied_2023.geojson"
 
 map_data_clean <- cleaned_pollution_data %>%
   filter(
-    year == 2023, # Pick a single year to visualize on the map
+    year == 2023, # single year to visualize on the map
   )
 
 spatial_joined <- nl_map %>%
