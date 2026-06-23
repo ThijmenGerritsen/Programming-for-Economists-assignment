@@ -173,20 +173,6 @@ Ziekenhuisopnamen_diagnose_indeling_VTV_regio_02062026_164323 <- read_delim("dat
 
 ```{r visualise_map}
 library(sf)
-library(ggplot2)
-
-# Load CBS GGD-regio map for 2023 (whole NL), WGS84
-ggd <- st_read("https://cartomap.github.io/nl/wgs84/ggdregio_2023.geojson")
-
-# Plot
-ggplot(ggd) +
-  geom_sf(fill = "lightblue", color = "white", linewidth = 0.2) +
-  theme_void() +
-  labs(title = "GGD-regio's Nederland")
-```
-
-```{r visualise_map}
-library(sf)
 library(dplyr)
 library(stringr)
 library(ggplot2)
@@ -352,40 +338,6 @@ Use APA referencing throughout your document.
 6. European Environment Agency. (2022). Air Quality Health Risk Assessments. https://www.eea.europa.eu/en/datahub/datahubitem-view/49930245-dc33-4c47-93b8-9512f0622ebc?activeAccordion=1084339
 
 7. Centraal Bureau voor de Statistiek. (2025). Ziekenhuisopnamen; diagnose-indeling VTV, regio. In Centraal Bureau voor de Statistiek. https://www.cbs.nl/nl-nl/cijfers/detail/84523ned
-```{r}
-# 1. Laad benodigde packages
-library(sf)
-library(ggplot2)
-library(dplyr)
-
-# 2. Laad NUTS3-kaart van Europa en filter op Nederland
-nuts3_all <- st_read("https://github.com/iiasa/scse-geojson/raw/main/nuts/NUTS_RG_03M_2024_4326.geojson")
-nuts3_nl <- nuts3_all %>% filter(CNTR_CODE == "NL")
-
-# 3. Bepaal het meest recente jaar in je data
-recent_jaar <- max(combined_data$year, na.rm = TRUE)
-
-# 4. Selecteer de juiste kolom (let op: exacte naam met 'm3')
-data_heatmap <- combined_data %>%
-  filter(Year == recent_jaar) %>%
-  select(code, 
-         concentration = `Air Pollution Population Weighted Average [ug/m3]`)
-
-# 5. Koppel aan de kaart
-nuts3_merged <- nuts3_nl %>%
-  left_join(data_heatmap, by = c("NUTS_ID" = "code"))
-
-# 6. Plot de spatial heatmap
-ggplot(nuts3_merged) +
-  geom_sf(aes(fill = concentration), color = "white", size = 0.2) +
-  scale_fill_viridis_c(option = "plasma", 
-                       na.value = "lightgrey",
-                       name = "PM2.5 (µg/m³)") +
-  labs(title = paste("Luchtvervuiling per NUTS3-regio,", recent_jaar),
-       subtitle = "Populatiegewogen gemiddelde concentratie") +
-  theme_void() +
-  theme(legend.position = "right")
-```
 
 ```{r visualise_map}
 library(sf)
