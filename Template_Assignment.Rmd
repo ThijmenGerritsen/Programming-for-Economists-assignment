@@ -81,9 +81,6 @@ Think of things like:
 # Part 3 - Quantifying
 
 ## 3.1 Data cleaning
-
-Say we want to include only larger distances (above 2) in our dataset, we can filter for this.
-
 ```{r data_cleaning}
 
 cleaned_pollution_data<- combined_data
