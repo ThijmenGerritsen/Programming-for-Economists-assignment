@@ -4,14 +4,14 @@ title: "Health defects of PM 2.5 mapped"
 author: "Marnix Kuil 2900391, Peter Ac 2877986 Simon Lamers 2894404,Sophie Valckx 2905390, Thijmen Gerritsen 2787153, Thomas Smit 2898030" 
 
 date: "2026-06-23"
-output: pdf_document
+output:
+  pdf_document:
+    latex_engine: xelatex
 ---
 
 # Set-up your environment
 
 ```{r package_install, include=FALSE}
-install.packages("patchwork")
-install.packages(c("ggplot2", "gridExtra"))
 ```
 
 ```{r packages}
@@ -56,7 +56,7 @@ opnamen <- read_csv("data/DataExtract2.csv")
 
 ## 2.2 Provide a short summary of the dataset(s)
 
-```{r}
+```{r data_summary_1}
 head(combined_data)
 ```
 
@@ -66,7 +66,7 @@ The Ziekenhuisopnamen dataset shows the hospitalizations across 25 GGD regions i
 
 
 
-```{r}
+```{r data_summary_2}
 head(opnamen)
 ```
 
@@ -81,7 +81,7 @@ The NUTS dataset is "based on gridded data: ambient air concentrations and popul
 # Part 3 - Quantifying
 
 ## 3.1 Data cleaning
-```{r data_cleaning}
+```{r data_cleaning_1}
 
 cleaned_pollution_data<- combined_data
 cleaned_pollution_data$code <- cleaned_pollution_data$`NUTS Code`
@@ -104,13 +104,21 @@ cleaned_pollution_data <- cleaned_pollution_data %>%
   )
 
 ```
+"str_length(code) == 5": keeps only NUTS 3 regional level records, removing national and provincial aggregates that would distort comparisons.
+"Category, Outcome, Health Indicator": pins the analysis to one clearly defined metric (air pollution attributable deaths), preventing mixing of incompatible health outcomes.
+"Sex == "Total"": avoids triple-counting by excluding the sex-stratified rows that exist alongside the total.
+"Age >= 30": focuses on the population most affected by pollution-related mortality and ensures age group consistency across regions.
+"Scenario == Baseline WHO 2021": fixes a single modelling assumption across all records.
 
-```{r data_cleaning}
+```{r data_cleaning_2}
 Ziekenhuisopnamen_diagnose_indeling_VTV_regio_02062026_164323 <- read_delim("data/Ziekenhuisopnamen__diagnose_indeling_VTV__regio_02062026_164323.csv", 
      delim = ";", escape_double = FALSE, trim_ws = TRUE, 
      skip = 3)
 ```
-
+delim = ";": CSV files sometimes use semicolons as separators instead of commas.
+escape_double = FALSE: prevents misreading of quotation marks within text fields.
+trim_ws = TRUE: strips invisible whitespace that would cause merge failures.
+skip = 3: skips the metadata rows at the top of the file so only actual data is read.
 ## 3.2 Generate necessary variables
 
 Variable 1
@@ -137,7 +145,7 @@ cleaned_pollution_data$period <- factor(
 
 ## 3.3 Visualize temporal variation
 
-```{r}
+```{r visualize_temporal_variation}
   name=cleaned_pollution_data$year 
   value=cleaned_pollution_data$`Air Pollution Population Weighted Average [ug/m3]`
 
@@ -320,13 +328,13 @@ This graph shows how the air pollution weighted average changes over the years, 
 
 ## 4.1 Discuss your findings
 
-### Analysis of the temporal variation
+## 4.2 Analysis of the temporal variation
 The temporal variation shows that the population-weighted average air pollution concentration of PM2.5 declined over the period 2005-2023. It falls from approximately 17.3 µg/m³ in 2005 to 8.1 µg/m³ in 2023. A downward trend line is visible with low outliers around 2012 and 2020. There are some fluctuations between the years, but the downward trend is very consistent. This suggests that particulate matter emission policy is effective when it comes to reducing PM2.5 emissions between these years.
-### Analysis of the spatial variation
+## 4.3 Analysis of the spatial variation
 Our spatial analysis shows two maps of the Netherlands. One with the population-weighted PM2.5 by Nuts 3 regions (2023) and one with the age-standardized CHD admissions per 10,000 residents per GGD region (2023.) De Air pollution map shows that the PM2.5 concentrations in 2024 can vary from a bit less than 7,0 µg/m³ tot 9,5 µg/m³. The highest concentrations can be seen Zeeland and in Brabant, the lowest concentrations are in the north of the Netherlands, especially in the north-west of the Netherlands. This seems logical since the highest concentration of residents and intensive industrial businesses operate more in the middle and south of the Netherlands. Though, the relative difference is not that much, it has only a maximum of 2,5 µg/m³ difference in PM2.5. This is also concluded from the boxplot of the subpopulation variation, both show that air pollution is relatively equally spread, probably because of the small scale of the Netherlands. The map of spatial variation of Cardiovascular Admissions shows us that hospital admissions vary stronger between regions. There is a high concentration in Flevoland, which could be explained because of the fact that Flevoland also hospitalizes people from arounding areas like Amsterdam and het Gooi. This means that hospitalization admissions may be an overestimization. It strikes that Zeeland, which has a high Air Pollution level, also has a higher hospitalization number, this is also the case with the Randstad. The regions with higher PM2.5 concentrations also show higher hospitalization numbers of cardiovascular diseases. This supports the hypothesis that long-term exposure to particular matter increases the chance of cardiovascular diseases. But the correlation is not perfectly explainable because of these facts, since other influences like socioeconomic classes or the availability of healthcare for example ar not taken in account here. 
-### Analysis of the subpopulation variation
+## 4.4 Analysis of the subpopulation variation
 The boxplot of the subpopulation variation shows a small and consistent difference in urbanization and air pollution exposure. Urban centers have the highest median population-weighted pollution (~10.6 µg/m³) and the widest spread, while mostly uninhabited and dispersed rural areas sit slightly lower (~10.2–10.4 µg/m³). But the differences between categories are small, this could mean that in the Netherlands, pollution is spatially not very different. This is likely because it is a small country with dense infrastructure and industry. Industrial and travelling emissions are spilled over from dense to sparse areas to some degree. Another explanation for the low variation between levels of urbanization, is that the pollution levels are population-weighted. Areas with a high degree of industrialization and dense infrastructure tend to be more densely populated than regions with less industrial activity, evening out the per capita emissions.  
-### Event analysis
+## 4.5 Event analysis
 This graph shows how the air pollution weighted average changes over the years, with a closer look how this changes before and after 2020. This was the year with heavy lockdown measures.  Apart from a slightly higher than usual drop in pollution per person in 2020 we can see more meaningful changes when we look at the change in the trend of air pollution per person. Both before and after 2020 the air pollution trends downwards, although the trend before 2020 was a higher decrease than after. There could be a few different reasons why the air pollution per person is decreasing slower post-covid. The population change could have an effect as in the name the pollution is measured per Dutch citizen. Another reason could be that polluting activities increased or a decreased focus on sustainability in The Netherlands. These factors make it hard to make concrete conclusions from this graph alone. Further research into these topics could help further substantiating a meaningful answer.
 # Part 5 - Reproducibility
 
