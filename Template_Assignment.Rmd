@@ -314,7 +314,7 @@ ggplot(cleaned_pollution_data,
   theme_minimal()
 ```
 
-Relevant because: drop in pollution, less industrial activity, policy change? visible decrease
+This graph shows how the air pollution weighted average changes over the years, with a closer look how this changes before and after 2020. This was the year with heavy lockdown measures.  Apart from a slightly higher than usual drop in pollution per person in 2020 we can see more meaningful changes when we look at the change in the trend of air pollution per person. Both before and after 2020 the air pollution trends downwards, although the trend before 2020 was a higher decrease than after. There could be a few different reasons why the air pollution per person is decreasing slower post-covid. The population change could have an effect as in the name the pollution is measured per Dutch citizen. Another reason could be that polluting activities increased or a decreased focus on sustainability in The Netherlands. These factors make it hard to make concrete conclusions from this graph alone. Further research into these topics could help further substantiating a meaningful answer.
 
 # Part 4 - Discussion
 
