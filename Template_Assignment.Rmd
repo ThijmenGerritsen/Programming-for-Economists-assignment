@@ -1,6 +1,6 @@
 ---
 title: "Health defects of PM 2.5 mapped"
-author: "Marnix Peter Simon Lamers 2894404,Sophie Valckx 2905390, Thijmen Gerritsen 2787153, Thomas" 
+author: "Marnix Kuil 2900391, Peter Simon Lamers 2894404,Sophie Valckx 2905390, Thijmen Gerritsen 2787153, Thomas" 
 date: "2026-06-23"
 output: pdf_document
 ---
