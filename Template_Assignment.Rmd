@@ -177,7 +177,6 @@ library(ggplot2)
 library(readr)
 library(gridExtra)
 
-# ── Pollution map data ──────────────────────────────────────────────────
 nl_map <- st_read("https://cartomap.github.io/nl/wgs84/coropgebied_2023.geojson", quiet = TRUE)
 
 map_data_clean <- cleaned_pollution_data %>%
@@ -186,7 +185,7 @@ map_data_clean <- cleaned_pollution_data %>%
 spatial_joined <- nl_map %>%
   left_join(map_data_clean, by = c("statnaam" = "NUTS Name"))
 
-# ── Hospital admissions map data ────────────────────────────────────────
+
 ggd_map <- st_read("https://cartomap.github.io/nl/wgs84/ggdregio_2023.geojson", quiet = TRUE)
 
 raw_hospital_data <- read_delim("data/Ziekenhuisopnamen__diagnose_indeling_VTV__regio_02062026_164323.csv", 
@@ -211,7 +210,6 @@ clean_health_data <- data.frame(
 spatial_joined_ggd <- ggd_map %>%
   left_join(clean_health_data, by = c("statnaam" = "clean_region"))
 
-# ── Plots ───────────────────────────────────────────────────────────────
 plot1 <- ggplot(spatial_joined) +
   geom_sf(aes(fill = `Air Pollution Population Weighted Average [ug/m3]`), color = "white", linewidth = 0.2) +
   scale_fill_viridis_c(option = "magma", name = "Pollution (ug/m3)", direction = -1) +
@@ -273,9 +271,8 @@ geom_boxplot(
   )
 ```
 
+This graph is relevant to our social problem as we are aware that not all regions in The Netherlands stay below the new limits for particulate matter exposure set to be introduced in 2030 by the European Union. With the subpopulation analysis we divide the population based on the degree of urbanisation of the region to highlight certain areas standing out in pollution, which can help assess which regions need more attention towards the new rulesets of 2030.
 ## 3.6 Event analysis
-
-Analyze the relationship between two variables.
 
 ```{r analysis}
 require(tidyverse) 
