@@ -22,7 +22,7 @@ require(yaml)
 
 # Title Page
 
-Marnix Peter Simon Lamers,Sophie Valckx, Thijmen Gerritsen, Thomas
+Marnix Kuil, Peter Ac, Simon Lamers, Sophie Valckx, Thijmen Gerritsen, Thomas
 
 Tutorial group number 3.5
 
@@ -45,8 +45,6 @@ Another reason this is relevant has to do with international guidelines. Current
 # Part 2 - Data Sourcing
 
 ## 2.1 Load in the data
-
-Preferably from a URL, but if not, make sure to download the data and store it in a shared location that you can load the data in from. Do not store the data in a folder you include in the Github repository!
 
 ```{r loading_data}
 library(readr)
@@ -260,11 +258,7 @@ ggplot(spatial_joined) +
   )
 ```
 
-Here you provide a description of why the plot above is relevant to your specific social problem.
-
 ## 3.5 Visualize sub-population variation
-
-What is the poverty rate by state?
 
 ```{r visualise_subpopulations}
 
@@ -288,8 +282,6 @@ geom_boxplot(
   
 
 ```
-
-Here you provide a description of why the plot above is relevant to your specific social problem.
 
 ## 3.6 Event analysis
 
