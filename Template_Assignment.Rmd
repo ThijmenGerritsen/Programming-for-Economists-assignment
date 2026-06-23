@@ -157,7 +157,7 @@ ggplot(cleaned_pollution_data, aes(x=Year, y=`Air Pollution Population Weighted 
   )+
   theme_minimal()
 ```
-
+The temporal plot is relevant because it shows the longerm esposure to PM2.5 in the Netherlands. This is crucial to understand if air pollution policies have worked. 
 
 ## 3.4 Visualize spatial variation
 
@@ -234,6 +234,7 @@ plot2 <- ggplot(spatial_joined_ggd) +
 
 grid.arrange(plot1, plot2, ncol = 2)
 ```
+The Spatial maps are relevant because they show regional differences in air polution and cardiovascular admissions, because of this policymakers can identify risk areas that need policies.
 
 ## 3.5 Visualize sub-population variation
 
