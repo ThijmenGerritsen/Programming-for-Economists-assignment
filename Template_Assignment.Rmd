@@ -1,6 +1,6 @@
 ---
 title: "Template"
-author: "Studentnames and studentnumbers here" Marnix Peter Simon Lamers 2894404,Sophie Valckx Thijmen Gerritsen 2787153, Thomas
+author: "Studentnames and studentnumbers here" Marnix Peter Simon Lamers 2894404,Sophie Valckx 2905390, Thijmen Gerritsen 2787153, Thomas
 date: "2026-06-23"
 output: pdf_document
 ---
