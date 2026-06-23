@@ -1,6 +1,8 @@
 ---
 title: "Health defects of PM 2.5 mapped"
-author: "Marnix Kuil 2900391, Peter Simon Lamers 2894404,Sophie Valckx 2905390, Thijmen Gerritsen 2787153, Thomas" 
+
+author: "Marnix Kuil 2900391, Peter Ac 2877986 Simon Lamers 2894404,Sophie Valckx 2905390, Thijmen Gerritsen 2787153, Thomas" 
+
 date: "2026-06-23"
 output: pdf_document
 ---
@@ -9,6 +11,7 @@ output: pdf_document
 
 ```{r package_install, include=FALSE}
 install.packages("patchwork")
+install.packages(c("ggplot2", "gridExtra"))
 ```
 
 ```{r packages}
@@ -19,7 +22,7 @@ require(yaml)
 
 # Title Page
 
-Marnix Peter Simon Lamers,Sophie Valckx, Thijmen Gerritsen, Thomas
+Marnix Kuil, Peter Ac, Simon Lamers, Sophie Valckx, Thijmen Gerritsen, Thomas
 
 Tutorial group number 3.5
 
@@ -42,8 +45,6 @@ Another reason this is relevant has to do with international guidelines. Current
 # Part 2 - Data Sourcing
 
 ## 2.1 Load in the data
-
-Preferably from a URL, but if not, make sure to download the data and store it in a shared location that you can load the data in from. Do not store the data in a folder you include in the Github repository!
 
 ```{r loading_data}
 library(readr)
@@ -142,7 +143,7 @@ ggplot(cleaned_pollution_data, aes(x=year, y=`Air Pollution Population Weighted 
   geom_smooth(method = "lm", color = "blue", linewidth = 1) +
   
   labs(
-    title = "Temporal Variation of Air Pollution",
+    title = "Temporal Variation of PM2.5 Air Pollution in the Netherlands",
     y = "Air Pollution Population Weighted Average [ug/m3]",
     x = "Year"
   )+
@@ -165,9 +166,10 @@ library(dplyr)
 library(stringr)
 library(ggplot2)
 library(readr)
-library(patchwork)  
+library(gridExtra)
 
-nl_map <- st_read("https://cartomap.github.io/nl/wgs84/coropgebied_2023.geojson")
+# ── Pollution map data ──────────────────────────────────────────────────
+nl_map <- st_read("https://cartomap.github.io/nl/wgs84/coropgebied_2023.geojson", quiet = TRUE)
 
 map_data_clean <- cleaned_pollution_data %>%
   filter(year == 2023)
@@ -175,6 +177,32 @@ map_data_clean <- cleaned_pollution_data %>%
 spatial_joined <- nl_map %>%
   left_join(map_data_clean, by = c("statnaam" = "NUTS Name"))
 
+# ── Hospital admissions map data ────────────────────────────────────────
+ggd_map <- st_read("https://cartomap.github.io/nl/wgs84/ggdregio_2023.geojson", quiet = TRUE)
+
+raw_hospital_data <- read_delim("data/Ziekenhuisopnamen__diagnose_indeling_VTV__regio_02062026_164323.csv", 
+                                delim = ";", col_names = FALSE, skip = 3)
+
+clean_health_data <- data.frame(
+  raw_region     = raw_hospital_data$X1[9:33],
+  admission_rate = raw_hospital_data$X31[9:33]
+) %>%
+  mutate(
+    admission_rate = as.numeric(str_replace(admission_rate, ",", ".")),
+    clean_region   = str_replace(raw_region, " \\(GG\\)", "")
+  ) %>%
+  mutate(
+    clean_region = case_when(
+      str_detect(clean_region, "Gelderland-Midden") ~ "Veiligheids- en Gezondheidsregio Gelderland-Midden",
+      str_detect(clean_region, "ZHZ")               ~ "Dienst Gezondheid & Jeugd ZHZ",
+      TRUE ~ clean_region
+    )
+  )
+
+spatial_joined_ggd <- ggd_map %>%
+  left_join(clean_health_data, by = c("statnaam" = "clean_region"))
+
+# ── Plots ───────────────────────────────────────────────────────────────
 plot1 <- ggplot(spatial_joined) +
   geom_sf(aes(fill = `Air Pollution Population Weighted Average [ug/m3]`), color = "white", linewidth = 0.2) +
   scale_fill_viridis_c(option = "magma", name = "Pollution (ug/m3)", direction = -1) +
@@ -201,10 +229,9 @@ plot2 <- ggplot(spatial_joined_ggd) +
   labs(
     title = "Spatial Variation of Cardiovascular Admissions",
     subtitle = "Age-standardized CHD admissions per 10,000 by GGD region",
-    caption = "Source: CBS / VTV-Kompas"
   )
 
-plot1 + plot2
+grid.arrange(plot1, plot2, ncol = 2)
 ```
 ```{r visualise_map}
 library(sf)
@@ -231,11 +258,7 @@ ggplot(spatial_joined) +
   )
 ```
 
-Here you provide a description of why the plot above is relevant to your specific social problem.
-
 ## 3.5 Visualize sub-population variation
-
-What is the poverty rate by state?
 
 ```{r visualise_subpopulations}
 
@@ -259,8 +282,6 @@ geom_boxplot(
   
 
 ```
-
-Here you provide a description of why the plot above is relevant to your specific social problem.
 
 ## 3.6 Event analysis
 
