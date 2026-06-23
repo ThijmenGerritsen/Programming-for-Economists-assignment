@@ -9,9 +9,9 @@ output: pdf_document
 
 # Set-up your environment
 
-```{r package_install, include=FALSE}
-install.packages("patchwork")
-install.packages(c("ggplot2", "gridExtra"))
+```{r library, include=FALSE}
+library("patchwork")
+library(c("ggplot2", "gridExtra"))
 ```
 
 ```{r packages}
