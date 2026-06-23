@@ -242,7 +242,7 @@ plot2 <- ggplot(spatial_joined_ggd) +
 
 grid.arrange(plot1, plot2, ncol = 2)
 ```
-The Spatial maps are relevant because they show regional differences in air pollution and cardiovascular admissions, because of this policymakers can identify risk areas that need policies.
+The Spatial maps are relevant because they show regional differences in air pollution and cardiovascular admissions. Because of this policymakers can identify risk areas that need policies.
 
 ## 3.5 Visualize sub-population variation
 
