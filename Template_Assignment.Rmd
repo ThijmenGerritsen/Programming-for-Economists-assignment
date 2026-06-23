@@ -255,9 +255,13 @@ geom_boxplot(
     x = "Degree of Urbanisation",
     y = "Population-Weighted Air Pollution (ug/m3)"
   ) +
-  theme_minimal() 
-  
-
+  theme_minimal() +
+  theme(
+    plot.title    = element_text(size = 8, face = "bold"),
+    plot.subtitle = element_text(size = 7),
+    axis.title    = element_text(size = 7),
+    axis.text     = element_text(size = 6)
+  )
 ```
 
 ## 3.6 Event analysis
